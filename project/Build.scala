@@ -2,6 +2,9 @@ import sbt._
 import Keys._
 
 object BuildSettings {
+
+  val path = file("/home/antoras/dev/Scala/scala/build/pack")
+
   val buildSettings = Defaults.defaultSettings ++ Seq(
     organization := "org.scalamacros",
     version := "1.0.0",
@@ -16,10 +19,10 @@ object BuildSettings {
       "-target:jvm-1.6",
       "-Ymacro-debug-lite"
     ),
-    scalaHome := Some(file("/home/antoras/dev/Scala/scala/build/pack")),
-    unmanagedBase := file("/home/antoras/dev/Scala/scala/build/pack"),
+    scalaHome := Some(path),
+    unmanagedBase := path,
     unmanagedJars in Compile <<= baseDirectory map { base =>
-      (file("/home/antoras/dev/Scala/scala/build/pack") / "lib" ** "*.jar").classpath
+      (path / "lib" ** "*.jar").classpath
     },
     scalaVersion := "2.11.0-SNAPSHOT",
     scalaOrganization := "org.scala-lang.macro-paradise",

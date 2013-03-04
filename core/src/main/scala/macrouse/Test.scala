@@ -32,6 +32,25 @@ object TypedMacro extends macrotest.Macros.Class(F.value) {
   println(m.reflect(this).symbol.baseClasses)
   */
 }
+/*
+
+  generated:
+
+  object TypedMacro extends macrotest.MacroClass with macrotest.MacroTrait with macrotest.MacroTrait2 {
+    def <init>(): macrouse.TypedMacro.type = {
+      TypedMacro.super.<init>(F.value());
+      TypedMacro.this./*MacroTrait$class*/$init$();
+      TypedMacro.this./*MacroTrait2$class*/$init$();
+      ()
+    };
+    scala.this.Predef.println(TypedMacro.this.c());
+    scala.this.Predef.println(TypedMacro.this.implicitlyAddedMethod());
+    scala.this.Predef.println(TypedMacro.this.implicitlyAddedMethod2());
+    scala.this.Predef.println(TypedMacro.this.getClass().getMethods());
+    <synthetic> private def readResolve(): Object = macrouse.this.TypedMacro
+  };
+
+*/
 
 object TypedMacro2 extends macrotest.Macros.TM {
   getClass.getMethods filterNot (_.getDeclaringClass.getName == "java.lang.Object") foreach println
