@@ -16,6 +16,11 @@ object BuildSettings {
       "-target:jvm-1.6",
       "-Ymacro-debug-lite"
     ),
+    scalaHome := Some(file("/home/antoras/dev/Scala/scala/build/pack")),
+    unmanagedBase := file("/home/antoras/dev/Scala/scala/build/pack"),
+    unmanagedJars in Compile <<= baseDirectory map { base =>
+      (file("/home/antoras/dev/Scala/scala/build/pack") / "lib" ** "*.jar").classpath
+    },
     scalaVersion := "2.11.0-SNAPSHOT",
     scalaOrganization := "org.scala-lang.macro-paradise",
     resolvers += Resolver.sonatypeRepo("snapshots")
@@ -34,8 +39,10 @@ object MyBuild extends Build {
   lazy val macros: Project = Project(
     "macros",
     file("macros"),
-    settings = buildSettings ++ Seq(
-      libraryDependencies <+= (scalaVersion)("org.scala-lang.macro-paradise" % "scala-reflect" % _))
+    settings = buildSettings ++ inConfig(config("macro"))(Defaults.configSettings) ++ Seq(
+      //libraryDependencies <+= (scalaVersion)("org.scala-lang.macro-paradise" % "scala-reflect" % _))
+      //libraryDependencies <+= (scalaVersion)("org.scala-lang" % "scala-reflect" % _)
+    )
   )
 
   lazy val core: Project = Project(
