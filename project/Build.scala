@@ -3,9 +3,7 @@ import Keys._
 
 object BuildSettings {
 
-  val path = file("/home/antoras/dev/Scala/scala/build/pack")
-
-  val buildSettings = Defaults.defaultSettings ++ Seq(
+  private lazy val buildSettings = Defaults.defaultSettings ++ Seq(
     organization := "org.scalamacros",
     version := "1.0.0",
     scalacOptions ++= Seq(
@@ -19,15 +17,29 @@ object BuildSettings {
       "-target:jvm-1.6",
       "-Ymacro-debug-lite"
     ),
-    scalaHome := Some(path),
-    unmanagedBase := path,
-    unmanagedJars in Compile <<= baseDirectory map { base =>
-      (path / "lib" ** "*.jar").classpath
-    },
     scalaVersion := "2.11.0-SNAPSHOT",
     scalaOrganization := "org.scala-lang.macro-paradise",
     resolvers += Resolver.sonatypeRepo("snapshots")
   )
+
+  private lazy val buildNormal = buildSettings ++ Seq(
+    libraryDependencies <+= (scalaVersion)("org.scala-lang.macro-paradise" % "scala-reflect" % _)
+    //libraryDependencies <+= (scalaVersion)("org.scala-lang" % "scala-reflect" % _)
+  )
+
+  private lazy val buildIntroduceMember = {
+    val path = file("/home/antoras/tmp/kepler-topic-introduce-member/pack")
+
+    buildSettings ++ Seq(
+      scalaHome := Some(path),
+      unmanagedBase := path,
+      unmanagedJars in Compile <<= baseDirectory map { base =>
+        (path / "lib" ** "*.jar").classpath
+      }
+    )
+  }
+
+  lazy val build = buildIntroduceMember
 }
 
 object MyBuild extends Build {
@@ -36,21 +48,18 @@ object MyBuild extends Build {
   lazy val root: Project = Project(
     "root",
     file("core"),
-    settings = buildSettings
+    settings = build
   ) aggregate(macros, core)
 
   lazy val macros: Project = Project(
     "macros",
     file("macros"),
-    settings = buildSettings ++ inConfig(config("macro"))(Defaults.configSettings) ++ Seq(
-      //libraryDependencies <+= (scalaVersion)("org.scala-lang.macro-paradise" % "scala-reflect" % _))
-      //libraryDependencies <+= (scalaVersion)("org.scala-lang" % "scala-reflect" % _)
-    )
+    settings = build
   )
 
   lazy val core: Project = Project(
     "core",
     file("core"),
-    settings = buildSettings
+    settings = build
   ) dependsOn(macros)
 }
