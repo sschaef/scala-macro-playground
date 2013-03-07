@@ -14,8 +14,8 @@ object BuildSettings {
       "-Xlog-reflective-calls",
       "-Ywarn-adapted-args",
       "-encoding", "UTF-8",
-      "-target:jvm-1.6",
-      "-Ymacro-debug-lite"
+      "-target:jvm-1.6"
+      //"-Ymacro-debug-lite"
     ),
     scalaVersion := "2.11.0-SNAPSHOT",
     scalaOrganization := "org.scala-lang.macro-paradise",
