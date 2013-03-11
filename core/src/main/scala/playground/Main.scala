@@ -16,4 +16,5 @@ object Test extends App {
   test("IntroduceMemberTest")(IntroduceMemberTest)
   test("ImplicitMacroTest")(ImplicitMacroTest)
   test("CaseClassTest")(CaseClassTest)
+  test("StringContextTest")(StringContextTest)
 }
