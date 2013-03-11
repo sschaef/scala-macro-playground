@@ -1,7 +1,7 @@
 package playground.macros.caseclass
 
 import language.experimental.macros
-import scala.reflect.macros.{ Context, Macro }
+import scala.reflect.macros.Macro
 
 object Macros {
   def toCaseClass(target: _) = macro Impl.toCaseClass
@@ -21,7 +21,7 @@ trait Impl extends Macro {
     c.introduceMember(targetType.typeSymbol, method)
     c.literalUnit
     */
-    parent(targetType)
+    //parent(targetType)
     c.introduceMember(targetType.typeSymbol, genToString(targetType))
     c.introduceMember(targetType.typeSymbol, genProductArity(targetType))
     c.introduceMember(targetType.typeSymbol, genCanEqual(targetType))
